@@ -1,0 +1,25 @@
+<div class="product-show">
+  <div class="product-show-image">
+    <%= image_tag(
+          @product.image.attached? ? url_for(@product.image) : "placeholder.png",
+          class: "product-image"
+        ) %>
+  </div>
+
+  <div class="product-show-details">
+    <h1><%= @product.name %></h1>
+    <h2><%= number_to_currency(@product.price, unit: "₹") %></h2>
+
+    <p><%= @product.description %></p>
+
+    <%= button_to "Add to Cart",
+          add_to_cart_path(@product),
+          method: :post,
+          class: "btn" %>
+
+    <%= button_to "Buy Now",
+          checkout_payments_path(product_id: @product.id),
+          method: :post,
+          class: "btn btn-primary" %>
+  </div>
+</div>
