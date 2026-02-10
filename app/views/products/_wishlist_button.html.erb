@@ -1,0 +1,17 @@
+<div class="absolute top-3 right-3 z-20">
+  <% if wished?(product) %>
+    <%= button_to wishlists_path(product_id: product.id),
+          method: :delete,
+          form_class: "inline",
+          class: "text-red-500 text-2xl bg-white rounded-full p-1 shadow hover:scale-110 transition" do %>
+      ❤️
+    <% end %>
+  <% else %>
+    <%= button_to wishlists_path(product_id: product.id),
+          method: :post,
+          form_class: "inline",
+          class: "text-gray-400 text-2xl bg-white rounded-full p-1 shadow hover:text-red-500 hover:scale-110 transition" do %>
+      🤍
+    <% end %>
+  <% end %>
+</div>

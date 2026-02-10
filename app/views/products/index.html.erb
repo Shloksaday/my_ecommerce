@@ -1,24 +1,82 @@
-<div class="products-grid">
-  <% @products.each do |product| %>
-    <div class="product-card">
-      <% if product.image.attached? %>
-        <%= image_tag product.image, class: "product-image" %>
-      <% end %>
+<div class="max-w-7xl mx-auto px-6 py-12">
+  <div class="flex items-center justify-between mb-10">
+    <h1 class="text-4xl font-extrabold tracking-tight text-gray-800">
+      Latest Products
+    </h1>
 
-      <h3><%= product.name %></h3>
-      <p>₹ <%= product.price %></p>
+    <span class="text-sm text-gray-500">
+      <%= @products.count %> items
+    </span>
+  </div>
 
-      <%= link_to "View", product_path(product), class: "btn" %>
-      <%= button_to "Add to Cart",
-      add_to_cart_path(product),
-      method: :post %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
+    <% @products.each do |product| %>
+      <div class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition duration-300 overflow-hidden relative">
 
-      <%= button_to "Add to Cart",
-      add_to_cart_path(product),
-      method: :post,
-      class: "btn" %>
+        <!-- ❤️ Wishlist Button -->
+        <div class="absolute top-4 right-4 z-10">
+          <% if wished?(product) %>
+            <%= button_to wishlists_path(product_id: product.id),
+                  method: :delete,
+                  class: "text-red-500 text-2xl" do %>
+              ❤️
+            <% end %>
+          <% else %>
+            <%= button_to wishlists_path(product_id: product.id),
+                  method: :post,
+                  class: "text-gray-300 hover:text-red-500 text-2xl transition" do %>
+              🤍
+            <% end %>
+          <% end %>
+        </div>
 
+        <!-- Image Section -->
+        <div class="relative overflow-hidden">
+          <% if product.image.attached? %>
+            <%= image_tag product.image,
+                  class: "w-full h-56 object-cover transform group-hover:scale-110 transition duration-500" %>
+          <% else %>
+            <div class="w-full h-56 bg-gradient-to-br from-gray-100 to-gray-300 flex items-center justify-center text-gray-500">
+              No Image
+            </div>
+          <% end %>
 
-    </div>
-  <% end %>
+          <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <h2 class="text-lg font-semibold text-gray-800 mb-1 truncate">
+            <%= product.name %>
+          </h2>
+
+          <p class="text-gray-500 text-sm mb-4">
+            Premium quality product
+          </p>
+
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xl font-bold text-indigo-600">
+              ₹ <%= product.price %>
+            </span>
+
+            <span class="text-xs bg-green-100 text-green-700 px-3 py-1 rounded-full">
+              In stock
+            </span>
+          </div>
+
+          <!-- Actions -->
+          <div class="flex gap-3">
+            <%= link_to "View",
+                  product_path(product),
+                  class: "flex-1 text-center border border-gray-300 text-gray-700 py-2.5 rounded-lg font-medium hover:bg-gray-100 transition" %>
+
+            <%= button_to "Add to Cart",
+                  "#",
+                  class: "flex-1 bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 hover:shadow-md transition" %>
+          </div>
+        </div>
+
+      </div>
+    <% end %>
+  </div>
 </div>

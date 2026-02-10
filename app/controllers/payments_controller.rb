@@ -16,7 +16,7 @@ class PaymentsController < ApplicationController
             product_data: {
               name: product.name
             },
-            unit_amount: (product.price * 100).to_i   # 👈 FIXED
+            unit_amount: (product.price * 100).to_i  
           },
           quantity: 1
         }],
@@ -28,6 +28,21 @@ class PaymentsController < ApplicationController
       order.update!(stripe_session_id: session.id)
   
       redirect_to session.url, allow_other_host: true
+
+      def create
+        order = Order.find(params[:order_id])
+  
+        redirect_to root_path, notice: "Payment flow will be added next"
+    end
+
+    def success
+      flash[:success] = "Payment successful! Thank you for your purchase."
+      redirect_to products_path
+    end
+  
+    def cancel
+      flash[:alert] = "Payment was cancelled. You can try again."
+      redirect_to products_path
     end
   end
   

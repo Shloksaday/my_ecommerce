@@ -53,10 +53,15 @@ gem "sidekiq"
 gem 'stripe'
 gem 'stripe_event' 
 
+gem 'money-rails'
+
+
 gem "dotenv-rails", groups: [:development, :test]
 
 
 gem "twilio-ruby"
+
+
 
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
@@ -90,5 +95,8 @@ group :test do
   gem "selenium-webdriver"
 end
 
+group :development do
+  gem "letter_opener_web"
+end
 
 gem "tailwindcss-rails", "~> 4.4"

@@ -1,25 +1,78 @@
-<div class="product-show">
-  <div class="product-show-image">
-    <%= image_tag(
-          @product.image.attached? ? url_for(@product.image) : "placeholder.png",
-          class: "product-image"
-        ) %>
-  </div>
+<div class="max-w-6xl mx-auto px-6 py-14">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-14 items-start">
 
-  <div class="product-show-details">
-    <h1><%= @product.name %></h1>
-    <h2><%= number_to_currency(@product.price, unit: "₹") %></h2>
+    <!-- Product Image -->
+    <div class="bg-white rounded-2xl shadow-lg p-4">
+      <% if @product.image.attached? %>
+        <%= image_tag @product.image,
+              class: "w-full h-[420px] object-cover rounded-xl hover:scale-105 transition duration-500" %>
+      <% else %>
+        <div class="w-full h-[420px] bg-gray-100 flex items-center justify-center rounded-xl text-gray-400">
+          No Image Available
+        </div>
+      <% end %>
+    </div>
 
-    <p><%= @product.description %></p>
+    <!-- Product Info -->
+    <div>
+      <span class="inline-block mb-3 text-sm font-medium text-indigo-600 bg-indigo-50 px-4 py-1 rounded-full">
+        New Arrival
+      </span>
 
-    <%= button_to "Add to Cart",
-          add_to_cart_path(@product),
-          method: :post,
-          class: "btn" %>
+      <h1 class="text-4xl font-extrabold tracking-tight text-gray-900">
+        <%= @product.name %>
+      </h1>
 
-    <%= button_to "Buy Now",
-          checkout_payments_path(product_id: @product.id),
-          method: :post,
-          class: "btn btn-primary" %>
+      <div class="flex items-center gap-4 mt-4">
+        <p class="text-3xl font-bold text-indigo-600">
+          ₹ <%= @product.price %>
+        </p>
+
+        <span class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded-full">
+          In stock
+        </span>
+      </div>
+
+      <!-- Rating -->
+      <div class="flex items-center gap-1 mt-4 text-yellow-400">
+        ★★★★☆
+        <span class="text-sm text-gray-500 ml-2">(124 reviews)</span>
+      </div>
+
+      <!-- Description -->
+      <p class="text-gray-600 leading-relaxed mt-6">
+        <%= @product.description.presence || "This premium product is crafted with high-quality materials to deliver exceptional performance and style." %>
+      </p>
+
+      <!-- Highlights -->
+      <ul class="mt-6 space-y-2 text-gray-600 text-sm">
+        <li>✔ High-quality material</li>
+        <li>✔ Durable & long-lasting</li>
+        <li>✔ Fast delivery available</li>
+      </ul>
+
+      <!-- Actions -->
+      <div class="mt-10 flex flex-col sm:flex-row gap-4">
+        <%= button_to "Add to Cart",
+            add_to_cart_path(product_id: @product.id),
+            method: :post,
+            class: "w-full sm:w-auto bg-indigo-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-indigo-700 hover:shadow-lg transition" %>
+
+        <%= button_to "Buy Now",
+        buy_now_path(product_id: @product.id),
+        method: :post,
+        data: { turbo: false },
+        class: "bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700" %>
+
+      </div>
+
+      <!-- Trust Badges -->
+      <div class="mt-8 flex gap-6 text-sm text-gray-500">
+        <span>🚚 Free Delivery</span>
+        <span>🔒 Secure Payment</span>
+        <span>↩ Easy Returns</span>
+      </div>
+    </div>
+
   </div>
 </div>

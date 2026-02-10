@@ -1,21 +1,35 @@
 ActiveAdmin.register Product do
-  permit_params :name, :price, :description, :active, :image
+  permit_params :name, :description, :price, :category_id, :image
 
   filter :name
   filter :price
-  filter :active
+  filter :category
   filter :created_at
+
+  form do |f|
+    f.semantic_errors
+
+    f.inputs "Product Details" do
+      f.input :name
+      f.input :description
+      f.input :price
+      f.input :category, as: :select, collection: Category.pluck(:name, :id)
+      f.input :image, as: :file
+    end
+
+    f.actions
+  end
 
   index do
     selectable_column
     id_column
     column :name
     column :price
-    column :active
+    column :category
 
     column "Image" do |product|
       if product.image.attached?
-        image_tag url_for(product.image), size: "80x80"
+        image_tag product.image, size: "80x80"
       end
     end
 
@@ -25,24 +39,15 @@ ActiveAdmin.register Product do
   show do
     attributes_table do
       row :name
-      row :price
       row :description
-      row :active
+      row :price
+      row :category
 
       row :image do |product|
-        image_tag url_for(product.image), size: "200x200" if product.image.attached?
+        if product.image.attached?
+          image_tag product.image, size: "200x200"
+        end
       end
     end
-  end
-
-  form do |f|
-    f.inputs do
-      f.input :name
-      f.input :price
-      f.input :description
-      f.input :active
-      f.input :image, as: :file
-    end
-    f.actions
   end
 end

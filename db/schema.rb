@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_04_180819) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_10_184123) do
   create_table "active_admin_comments", force: :cascade do |t|
     t.integer "author_id"
     t.string "author_type"
@@ -65,6 +65,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_04_180819) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "order_id", null: false
@@ -77,7 +83,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_04_180819) do
   end
 
   create_table "orders", force: :cascade do |t|
+    t.integer "amount"
     t.datetime "created_at", null: false
+    t.string "payment_status", default: "pending"
     t.integer "product_id", null: false
     t.string "status"
     t.string "stripe_session_id"
@@ -90,12 +98,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_04_180819) do
 
   create_table "products", force: :cascade do |t|
     t.boolean "active"
+    t.integer "category_id", null: false
     t.datetime "created_at", null: false
     t.text "description"
     t.string "name"
     t.decimal "price"
     t.integer "stock"
     t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_products_on_category_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -110,10 +120,22 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_04_180819) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "wishlists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "product_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["product_id"], name: "index_wishlists_on_product_id"
+    t.index ["user_id"], name: "index_wishlists_on_user_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "products"
   add_foreign_key "orders", "users"
+  add_foreign_key "products", "categories"
+  add_foreign_key "wishlists", "products"
+  add_foreign_key "wishlists", "users"
 end

@@ -1,21 +1,17 @@
-class CartController < ApplicationController
+class CartsController < ApplicationController
   def show
-    @cart_items = Product.find(cart.keys)
+    @cart = session[:cart] || {}
+    @products = Product.find(@cart.keys)
   end
 
   def add
-    cart[params[:product_id]] = (cart[params[:product_id]] || 0) + 1
-    redirect_back fallback_location: root_path, notice: "Product added to cart"
+    session[:cart] ||= {}
+    session[:cart][params[:product_id]] = (session[:cart][params[:product_id]] || 0) + 1
+    redirect_to cart_path, notice: "Added to cart"
   end
 
   def remove
-    cart.delete(params[:product_id])
-    redirect_to cart_path, notice: "Product removed from cart"
-  end
-
-  private
-
-  def cart
-    session[:cart] ||= {}
+    session[:cart]&.delete(params[:product_id])
+    redirect_to cart_path, notice: "Removed from cart"
   end
 end

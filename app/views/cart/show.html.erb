@@ -1,18 +1,30 @@
-<h2>Your Cart</h2>
+<div class="max-w-5xl mx-auto px-6 py-10">
+  <h1 class="text-3xl font-bold mb-8">Your Cart</h1>
 
-<% if @cart_items.any? %>
-  <% @cart_items.each do |product| %>
-    <div class="cart-item">
-      <%= image_tag product.image, size: "80x80" if product.image.attached? %>
-      <strong><%= product.name %></strong>
-      ₹ <%= product.price %>
+  <% if @cart.empty? %>
+    <p class="text-gray-500">Your cart is empty.</p>
+  <% else %>
+    <div class="space-y-6">
+      <% @products.each do |product| %>
+        <div class="flex items-center justify-between bg-white p-5 rounded-lg shadow">
+          <div class="flex items-center gap-4">
+            <% if product.image.attached? %>
+              <%= image_tag product.image, class: "w-20 h-20 object-cover rounded" %>
+            <% end %>
 
-      <%= button_to "Remove",
-            remove_from_cart_path(product),
-            method: :delete,
-            class: "btn" %>
+            <div>
+              <p class="font-semibold"><%= product.name %></p>
+              <p class="text-sm text-gray-500">₹ <%= product.price %></p>
+              <p class="text-sm">Qty: <%= @cart[product.id.to_s] %></p>
+            </div>
+          </div>
+
+          <%= button_to "Remove",
+                remove_from_cart_path(product),
+                method: :delete,
+                class: "text-red-600 hover:underline" %>
+        </div>
+      <% end %>
     </div>
   <% end %>
-<% else %>
-  <p>Your cart is empty</p>
-<% end %>
+</div>

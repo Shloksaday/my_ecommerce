@@ -1,38 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Ecommerce</title>
-<%= csrf_meta_tags %>
-<%= csp_meta_tag %>
+  <head>
+    <title>Ecommerce</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-100 text-gray-800">
+
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-bold text-blue-600">🛒 MyStore</h1>
+
+        <div class="flex items-center space-x-6">
+          <%= link_to "Products", products_path, class: "font-medium hover:text-blue-600" %>
+
+          <%= link_to "Cart (#{session[:cart]&.values&.sum || 0})",
+              cart_path,
+              class: "font-medium hover:underline" %>
 
 
-<%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-<%= javascript_importmap_tags %>
-</head>
 
+          <% if user_signed_in? %>
+            <%= link_to "Logout",
+                destroy_user_session_path,
+                data: { turbo_method: :delete },
+                class: "text-red-500 font-medium" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "font-medium" %>
+            <%= link_to "Sign Up", new_user_registration_path,
+                class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+          <% end %>
 
-<body class="bg-gray-100 text-gray-800">
-<nav class="bg-white shadow mb-8">
-<div class="max-w-7xl mx-auto px-4 py-4 flex justify-between">
-<h1 class="text-xl font-bold">🛒 MyStore</h1>
-<div class="space-x-4">
-<%= link_to "Products", products_path, class: "text-blue-600" %>
-<% if user_signed_in? %>
-<%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "text-red-500" %>
-<% else %>
-<%= link_to "Login", new_user_session_path %>
-<%= link_to "Sign Up", new_user_registration_path %>
-<% end %>
-<%= link_to "Admin", admin_root_path, class: "font-semibold" %>
-</div>
-</div>
-</nav>
+          <%= form_with url: products_path, method: :get, local: true, class: "flex gap-2" do %>
+            <%= text_field_tag :query, params[:query],
+                  placeholder: "Search products...",
+                  class: "border rounded px-3 py-1 w-64" %>
+          
+            <%= submit_tag "Search",
+                  class: "bg-blue-600 text-white px-4 py-1 rounded" %>
+          <% end %>
+          
 
-<%= link_to "Cart", cart_path %>
+          <%= link_to "Admin",
+              admin_root_path,
+              class: "font-semibold text-gray-700 hover:text-black" %>
+                
+        </div>
+      </div>
+    </nav>
 
-
-<main class="max-w-7xl mx-auto px-4">
-<%= yield %>
-</main>
-</body>
+    <main class="max-w-7xl mx-auto px-6 py-8">
+      <%= yield %>
+    </main>
+  </body>
 </html>
