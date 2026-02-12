@@ -42,7 +42,7 @@ gem "bootsnap", require: false
 # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
 gem "kamal", require: false
 
-gem 'devise', '~> 4.9'
+gem 'devise', '~> 5.0'
 
 
 gem 'activeadmin'
