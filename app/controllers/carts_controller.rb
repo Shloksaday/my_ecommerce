@@ -38,6 +38,8 @@ class CartsController < ApplicationController
   private
 
   def calculate_total
+    return 0 unless session[:cart].present?
+    
     Product.where(id: session[:cart].keys).sum do |p|
       p.price * session[:cart][p.id.to_s]
     end

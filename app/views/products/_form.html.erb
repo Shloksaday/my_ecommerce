@@ -1,0 +1,17 @@
+<%= form_with model: product, local: true do |f| %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :price %>
+  <%= f.number_field :price %>
+
+  <%= f.label :description %>
+  <%= f.text_area :description %>
+
+  <%= f.label :category_id %>
+  <%= f.collection_select :category_id, Category.all, :id, :name, prompt: "Select Category" %>
+
+  <%= f.submit "Create Product" %>
+
+<% end %>

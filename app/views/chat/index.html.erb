@@ -1,0 +1,33 @@
+<div class="max-w-3xl mx-auto py-10 px-6">
+  <h1 class="text-3xl font-bold mb-6">🤖 Welcome to Shlok's AI Assistant</h1>
+
+  <!-- Chat Messages -->
+  <div id="chat-box" class="bg-white p-6 rounded-xl shadow h-96 overflow-y-auto mb-6">
+
+    <% if @user_message.present? %>
+      <div class="mb-4 p-3 bg-gray-100 rounded">
+        <strong>You:</strong> <%= @user_message %>
+      </div>
+    <% end %>
+
+    <% if @reply.present? %>
+      <div class="mb-4 p-3 bg-indigo-100 rounded">
+        <strong>AI:</strong> <%= @reply %>
+      </div>
+    <% end %>
+
+  </div>
+
+  <!-- Form -->
+  <%= form_with url: chat_path, method: :post, data: { turbo: false } do %>
+
+    <div class="flex gap-3">
+      <%= text_field_tag :message, nil,
+            placeholder: "Ask something...",
+            class: "flex-1 border rounded-lg px-4 py-2" %>
+
+      <%= submit_tag "Send",
+            class: "bg-indigo-600 text-white px-6 rounded-lg" %>
+    </div>
+  <% end %>
+</div>

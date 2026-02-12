@@ -1,0 +1,11 @@
+<turbo-stream action="append" target="chat-box">
+  <template>
+    <div class="mb-4">
+      <p class="font-semibold text-gray-700">You:</p>
+      <p class="mb-2"><%= params[:message] %></p>
+
+      <p class="font-semibold text-indigo-600">AI:</p>
+      <p class="bg-gray-100 p-3 rounded-lg"><%= @response %></p>
+    </div>
+  </template>
+</turbo-stream>

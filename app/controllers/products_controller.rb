@@ -24,12 +24,14 @@ class ProductsController < ApplicationController
   end
 
   def create
-    
-    @product = Product.new(product_params)
+    @product = Product.new(permitted_params[:product])
+    @product.user = current_user
+
+
     
     if @product.save
       UserMailer.order_confirmation(@product).deliver_now
-      redirect_to @product, notice: 'Product created successfully'
+      redirect_to admin_product_path, notice: 'Product created successfully'
     else
       render :new, status: :unprocessable_entity
     end

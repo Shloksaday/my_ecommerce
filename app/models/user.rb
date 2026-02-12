@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  has_many :products, foreign_key: :user_id
+
   has_many :orders
 
   has_many :wishlists, dependent: :destroy
@@ -11,5 +13,6 @@ class User < ApplicationRecord
 
   has_one :cart, dependent: :destroy
 
+  has_many :messages, dependent: :destroy
 
 end

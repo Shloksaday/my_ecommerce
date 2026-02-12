@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "chat/index"
+  get "chat/create"
+  get "chats/index"
   get "wishlists/index"
   get "wishlists/create"
   get "wishlists/destroy"
@@ -6,11 +9,17 @@ Rails.application.routes.draw do
 
   devise_for :users
   resources :products
+  get  "chat", to: "chat#index"
+  post "chat", to: "chat#create"
+
+
+
 
   resources :wishlists, only: [:index, :create, :destroy] do
     post :move_to_cart, on: :member
   end
   
+  mount ActionCable.server => "/cable"
 
 
   resource :cart, only: [:show] do

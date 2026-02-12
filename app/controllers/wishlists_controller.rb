@@ -6,7 +6,16 @@ class WishlistsController < ApplicationController
   end
 
   def create
-    current_user.wishlists.find_or_create_by(product_id: params[:product_id])
+    product = Product.find(params[:product_id])
+    current_user.wishlists.create!(product: product)
+
+    ActionCable.server.broadcast(
+      "notifications_#{current_user.id}",
+      {
+        message: "❤️ #{product.name} added to wishlist!"
+      }
+    )
+
     redirect_back fallback_location: products_path
   end
 

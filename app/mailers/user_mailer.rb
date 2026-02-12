@@ -17,7 +17,7 @@
   class UserMailer < ApplicationMailer
     def order_confirmation(product)
       @product = product
-      @user = product.user
+      @user = User.first
       mail(
         # to: product.user.email,
         to: @user.email,

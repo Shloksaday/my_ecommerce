@@ -55,6 +55,10 @@ gem 'stripe_event'
 
 gem 'money-rails'
 
+gem "ruby-openai"
+
+gem "faraday"
+
 
 gem "dotenv-rails", groups: [:development, :test]
 
@@ -99,4 +103,8 @@ group :development do
   gem "letter_opener_web"
 end
 
-gem "tailwindcss-rails", "~> 4.4"
+gem "tailwindcss-rails"
+
+
+
+
