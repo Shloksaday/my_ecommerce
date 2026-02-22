@@ -20,16 +20,15 @@ class WishlistsController < ApplicationController
   end
 
   def destroy
-    wishlist = current_user.wishlists.find_by(product_id: params[:product_id])
-    wishlist&.destroy
-    redirect_back fallback_location: products_path
+    wishlist = current_user.wishlists.find(params[:id])
+    wishlist.destroy
+    redirect_to wishlists_path, notice: "Removed from wishlist"
   end
 
   def move_to_cart
     wishlist = current_user.wishlists.find(params[:id])
     product = wishlist.product
 
-    # Add to cart (adjust if your cart logic differs)
     cart = current_user.cart || current_user.create_cart
     cart.cart_items.find_or_create_by(product: product)
 

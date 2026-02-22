@@ -1,26 +1,14 @@
 Rails.application.routes.draw do
-  get "chat/index"
-  get "chat/create"
-  get "chats/index"
-  get "wishlists/index"
-  get "wishlists/create"
-  get "wishlists/destroy"
   root "products#index"
 
   devise_for :users
   resources :products
-  get  "chat", to: "chat#index"
-  post "chat", to: "chat#create"
+  resources :chats, only: [:index]
+  resources :messages, only: [:create]
 
-
-
-
-  resources :wishlists, only: [:index, :create, :destroy] do
+  resources :wishlists do
     post :move_to_cart, on: :member
   end
-  
-  mount ActionCable.server => "/cable"
-
 
   resource :cart, only: [:show] do
     post "add/:product_id", to: "carts#add", as: :add_to
@@ -41,8 +29,9 @@ Rails.application.routes.draw do
   end
 
   post "buy_now/:product_id", to: "orders#buy_now", as: :buy_now
-
   post "/webhooks/stripe", to: "webhooks#stripe"
+
+  mount ActionCable.server => "/cable"
 
   ActiveAdmin.routes(self)
 

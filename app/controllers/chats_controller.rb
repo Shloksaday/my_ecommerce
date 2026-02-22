@@ -1,16 +1,6 @@
-class ChatController < ApplicationController
-  before_action :authenticate_user!
-
+class ChatsController < ApplicationController
   def index
-  end
-
-  def create
-    service = OpenaiService.new
-    @response = service.chat(params[:message])
-
-    respond_to do |format|
-      format.turbo_stream
-      format.html { redirect_to chat_path }
-    end
+    @messages = Message.includes(:user).order(created_at: :asc)
+    @message = Message.new
   end
 end

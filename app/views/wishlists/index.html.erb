@@ -3,12 +3,12 @@
     ❤️ My Wishlist
   </h1>
 
-  <% if @wishlists.any? %>
+  <% if @wishlists.present? %>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10">
       <% @wishlists.each do |wishlist| %>
         <% product = wishlist.product %>
 
-        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5 relative">
+        <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-5">
 
           <!-- Product Image -->
           <% if product.image.attached? %>
@@ -26,7 +26,7 @@
           </h2>
 
           <p class="text-indigo-600 font-bold mt-2">
-            ₹ <%= product.price %>
+            ₹ <%= number_to_currency(product.price, unit: "", precision: 0) %>
           </p>
 
           <!-- Actions -->
@@ -41,11 +41,12 @@
                   class: "flex-1 bg-indigo-600 text-white rounded-lg py-2 hover:bg-indigo-700 transition" %>
           </div>
 
-          <!-- Remove -->
+          <!-- Remove Button -->
           <div class="mt-3">
             <%= button_to "Remove",
                   wishlist_path(wishlist),
                   method: :delete,
+                  data: { turbo_confirm: "Are you sure you want to remove this item?" },
                   class: "w-full bg-red-500 text-white rounded-lg py-2 hover:bg-red-600 transition" %>
           </div>
 
