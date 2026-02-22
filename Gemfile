@@ -108,3 +108,5 @@ gem "tailwindcss-rails"
 
 
 
+
+gem "pg", "~> 1.6"
